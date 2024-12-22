@@ -31,7 +31,9 @@ const SentenceTag = () => {
   const fetchSentences = useCallback(async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`http://localhost:3000/getsentence`);
+      const { data } = await axios.get(
+        `https://server-pos-major.vercel.app/getsentence`
+      );
       setSentences(data);
 
       const sentence = data.find((s) => s.index.toString() === id);
@@ -109,12 +111,15 @@ const SentenceTag = () => {
           position: index,
         }));
 
-        await axios.post(`http://localhost:3000/taggedsentences`, {
-          sentenceId: id,
-          sentence: sentence?.Content,
-          taggedWords: formattedTags,
-          sentenceStatus: true,
-        });
+        await axios.post(
+          `https://server-pos-major.vercel.app/taggedsentences`,
+          {
+            sentenceId: id,
+            sentence: sentence?.Content,
+            taggedWords: formattedTags,
+            sentenceStatus: true,
+          }
+        );
 
         // Use React Router for navigation instead of page reload
         navigate(0);

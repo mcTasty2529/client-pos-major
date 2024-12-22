@@ -50,7 +50,9 @@ const usePagination = (items, itemsPerPage) => {
 const sentenceService = {
   async fetchSentences() {
     try {
-      const response = await axios.get(`http://localhost:3000/getsentence`);
+      const response = await axios.get(
+        `https://server-pos-major.vercel.app/getsentence`
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching sentences:", error);

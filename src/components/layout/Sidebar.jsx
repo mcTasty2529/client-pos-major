@@ -8,12 +8,16 @@ const usePagination = (items, itemsPerPage) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
 
-  const totalPages = useMemo(
-    () => Math.ceil(items.length / itemsPerPage),
-    [items.length, itemsPerPage]
-  );
+  const totalPages = useMemo(() => {
+    // Ensure totalPages is at least 1 if there are items, or 0 if there are none
+    return items.length === 0 ? 1 : Math.ceil(items.length / itemsPerPage);
+  }, [items.length, itemsPerPage]);
 
   const currentItems = useMemo(() => {
+    if (!Array.isArray(items) || items.length === 0) {
+      return [];
+    }
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     return items.slice(indexOfFirstItem, indexOfLastItem);
@@ -176,7 +180,7 @@ const Sidebar = () => {
             onChange={(e) => setPageInput(e.target.value)}
             placeholder="Go to page"
             min="1"
-            max={totalPages}
+            max={totalPages > 0 ? totalPages : 1} // Ensure max is valid
             className="w-20 px-2 py-1 border rounded"
           />
           <button
